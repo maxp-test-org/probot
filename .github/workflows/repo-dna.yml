@@ -1,0 +1,22 @@
+
+name: Cider - Repository DNA
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  calc_repository_size:
+    runs-on: ubuntu-latest
+    steps:
+      # write repository size to output file
+      - uses: actions/checkout@v3
+      - name: get-repository-size
+        run: du -ks | cut -f1 > repo_size.txt
+        
+      # upload repo size artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          name: repo-size-artifact
+          path: repo_size.txt
